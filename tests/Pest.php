@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\RefGender;
+use App\Models\RefRace;
+use App\Models\RefReligion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -44,7 +47,25 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * A minimal, valid StaffProfile update payload (StoreStaffProfileRequest's
+ * required fields), for tests that just need something that passes
+ * validation. Pass $overrides for the fields under test.
+ *
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
+function validStaffProfilePayload(array $overrides = []): array
 {
-    // ..
+    return array_merge([
+        'staff_number' => 'STF-0100',
+        'full_name' => 'Jane Doe',
+        'ic_number' => '900101-14-1234',
+        'date_of_birth' => '1990-01-01',
+        'gender_id' => RefGender::factory()->create()->id,
+        'race_id' => RefRace::factory()->create()->id,
+        'religion_id' => RefReligion::factory()->create()->id,
+        'mobile_number' => '012-3456789',
+        'address' => ['address_line_1' => '123 Jalan Test'],
+    ], $overrides);
 }
