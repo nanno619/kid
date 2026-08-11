@@ -18,9 +18,7 @@ class StaffProfileController extends Controller
     #[Authorize('viewAny', StaffProfile::class)]
     public function index(): View
     {
-        return view('staff-profiles.index', [
-            'staffProfiles' => StaffProfile::with(['user', 'department'])->orderBy('full_name')->get(),
-        ]);
+        return view('staff-profiles.index');
     }
 
     #[Authorize('view', 'staffProfile')]
