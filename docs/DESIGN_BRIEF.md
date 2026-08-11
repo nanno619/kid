@@ -53,11 +53,27 @@ Leave Applications and Payslips are the same nav item and route for every role �
 ## Components
 
 Stick to Tabler's stock components rather than building custom ones — keeps the build fast and visually consistent:
-- **Lists** — `table` (staff, children, leave/job application queues) with a `badge` status column.
+- **Lists** — a Livewire component (live search + sortable columns + pagination, per the pattern below), `table` markup with a `badge` status column where the entity has one.
 - **Forms** — `card > card-body` wrapping `form-control`/`form-select` fields, grouped into sections matching each paper form's own sections (e.g. Children Registration's Section A–D, see [Form Fields](./FORM_FIELDS.md)).
 - **Detail/review screens** — `datagrid` for read-only label/value display (e.g. principal reviewing a submitted registration).
 - **Actions** — `btn-list` grouping primary actions (Approve / Reject / Return for Revision); `btn-primary` for the main action, `btn-outline-danger` for destructive ones.
 - **Empty states** — Tabler's `empty` component where a list has no records yet.
+
+### Standard list page pattern
+
+Established on Staff Profiles (`resources/views/components/⚡staff-profiles-table.blade.php`), this is the template every future list page (Children Registration, Job Applications, Leave Applications, Payslips) follows:
+
+- The **route/controller stays the entry point and the policy gate** — e.g. `StaffProfileController::index()` keeps its `#[Authorize('viewAny', StaffProfile::class)]` attribute and renders a thin Blade wrapper (`card` + `<livewire:component-name />`).
+- The **Livewire component owns its own data and re-checks authorization** in `mount()` (`$this->authorize('viewAny', ...)`) — defense in depth, since a mounted Livewire component has its own AJAX update endpoint independent of the page route that first rendered it.
+- **Toolbar** (`card-header`): a "Show [10/15/25/50] entries" per-page `<select>` (`wire:model.live="perPage"`) on the left, search input (`wire:model.live.debounce.300ms`, filtering across the columns shown, e.g. name + IC) on the right.
+- **Sort**: clickable column headers (`wire:click.prevent="sortBy('column')"`) toggling asc/desc, with a chevron icon (`ti-chevron-up`/`ti-chevron-down`) marking the active sort column and a neutral `ti-arrows-sort` icon on inactive-but-sortable columns. Only sort by columns that live directly on the table — relation columns (e.g. Department) stay unsorted unless a specific list page needs it.
+- **Pagination**: Livewire's `WithPagination` trait with `protected string $paginationTheme = 'bootstrap';` set on the component — this is what makes `{{ $this->results->links() }}` render Livewire's built-in Bootstrap pagination view ("Showing X to Y of Z results" + numbered Previous/1/2/3/Next links with an active-page highlight) instead of the Tailwind default, entirely for free — no custom pagination markup needed.
+- **Row actions**: icon-only buttons (e.g. `ti-edit`) with a `title` attribute instead of text buttons ("Edit"), centered in a narrow `w-1 text-center` "Action" column that's always **first** (leftmost), before the data columns — matches the egls reference and keeps actions in a predictable spot regardless of how many data columns a given list has.
+- `updated{Property}()` (search, perPage) calls `$this->resetPage()` so changing either always starts back at page 1.
+- **Status filter** (once a list page has a status, e.g. Children Registration's draft/submitted/approved): add as another `#[Url]`-synced property alongside search, same pattern.
+- Properties (search, sort, perPage, status) use Livewire's `#[Url]` attribute so list state is shareable/bookmarkable, per Livewire's own recommended pattern for filter/search interfaces.
+
+This pattern was cross-checked against another local Tabler+Livewire project's datatable (`egls.test/fi-management`, `app/Livewire/FiManagement/FiList.php`) for a second reference point — same toolbar/pagination/icon-action conventions, minus that project's export buttons and multi-field filter panel, which don't apply here yet.
 
 ## Rough Screen Layouts
 

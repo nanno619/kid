@@ -8,6 +8,7 @@ Technical decisions for building Kidner, the kindergarten admin system described
 
 - **Framework**: Laravel 13.24 (PHP 8.4)
 - **Frontend**: Blade + Tabler UI (Bootstrap 5), Vite for asset bundling
+- **List/datatable pages**: Livewire 4 — a deliberate departure from plain Blade for this one concern, chosen for live search/sort/pagination without full page reloads. First used on Staff Profiles; the standard every future list page (Children Registration, Job Applications, Leave Applications, Payslips) follows. Components use Livewire 4's default single-file format (`resources/views/components/⚡*.blade.php`) since Staff Profiles was the first component and no prior convention existed to override that default.
 - **Database**: MySQL
 - **Testing**: Pest, plus `pestphp/pest-plugin-browser` for real-browser tests (`tests/Browser/`) — Playwright-backed, covers what Dusk would without a second overlapping framework
 - **Local environment**: Laravel Herd
@@ -57,15 +58,16 @@ Technical decisions for building Kidner, the kindergarten admin system described
 
 - Undecided for now. Laravel Cloud is the path of least resistance if/when this needs to go live (per project conventions), but not committed yet.
 
-## New Dependencies to Add
+## Dependencies
 
-None of these are installed yet — to be added via `composer require` when implementation starts, with approval at that time (per project convention of not changing dependencies without approval):
-- `laravel/fortify`
-- `spatie/laravel-permission`
-- `spatie/laravel-medialibrary`
-- `spatie/laravel-activitylog`
-- `mpdf/mpdf`
-- `pestphp/pest-plugin-browser` (dev dependency)
+Added via `composer require`, each with explicit approval at the time (per project convention of not changing dependencies without approval):
+- `laravel/fortify` — Phase 0
+- `spatie/laravel-permission` — Phase 0
+- `spatie/laravel-medialibrary` — Phase 0
+- `spatie/laravel-activitylog` — Phase 0
+- `mpdf/mpdf` — Phase 0 (not yet used — payslip generation is Phase 5)
+- `pestphp/pest-plugin-browser` (dev dependency) — Phase 0 (not yet used — browser tests are Phase 6)
+- `livewire/livewire` — added for the Staff Profiles list, see Stack above
 
 ## Open Questions
 
