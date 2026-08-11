@@ -86,3 +86,4 @@ Depends on all prior phases being functionally complete.
 
 - Phases 2, 3, and 4 have no hard dependency on each other (all only depend on Phase 0/1) — they can be built in any order, or in parallel, once Phase 1 lands. Phase 5 depends on Phase 1 only, same story.
 - Deployment target is still an open question (per TDD) — not blocking for local development, but needs resolving before this plan includes a "ship it" phase.
+- **Navigation is built incrementally, not as its own phase** — see the Design Brief's Navigation section for the full permission-gated nav table. Each phase that lands a new page (Staff Profiles in Phase 1, Job Applications in Phase 2, Children Registration in Phase 3, etc.) adds that page's nav item as part of the same task, replacing the prototype's placeholder "Home / Interface / Forms" menu piece by piece. No nav item should ship pointing at a route that doesn't exist yet.

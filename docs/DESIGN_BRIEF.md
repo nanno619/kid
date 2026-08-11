@@ -30,7 +30,25 @@ Used consistently as `badge` components across every module that has a status (c
 ## Layout
 
 - **Fluid layout** (`container-fluid` throughout — navbar, page-header, page-body, footer), established in the dashboard prototype.
-- **Horizontal top nav**, no sidebar — primary sections as top-level nav items, sub-pages as dropdowns where a section has multiple children (mirrors the Home/Interface/Forms pattern already built).
+- **Horizontal top nav**, no sidebar — primary sections as top-level nav items, sub-pages as dropdowns where a section has multiple children (mirrors the Home/Interface/Forms mechanics already built — real menu content below replaces that placeholder).
+
+### Navigation
+
+The prototype's "Home / Interface / Forms" nav is a placeholder copied from the Tabler demo — real content is this, driven entirely by the permissions seeded in Phase 0 (`spatie/laravel-permission`'s `can()`), not per-role `@if` branching. Each item shows if the logged-in user has **any** of its listed permissions, so principal automatically sees everything admin does without a separate principal-specific menu:
+
+| Nav item | Visible when user can | Teacher sees it? | Admin/Principal sees it? |
+|---|---|---|---|
+| Dashboard | *(always)* | Yes | Yes |
+| Children Registration | `children.create` or `children.approve` | No | Yes |
+| Staff Profiles | `staff-profiles.view` | No | Yes |
+| My Profile | `staff-profiles.edit-own` | Yes | No (principal edits any profile via Staff Profiles) |
+| Job Applications | `job-applications.view` or `job-applications.approve` | No | Yes |
+| Leave Applications | `leave-applications.view`, `leave-applications.create`, or `leave-applications.approve` | Yes (own only) | Yes (all staff) |
+| Payslips | `payslips.view-own`, `payslips.create`, or `payslips.publish` | Yes (own only) | Yes (all staff) |
+
+Leave Applications and Payslips are the same nav item and route for every role — what differs is what the page shows/allows once you're on it (own records + submit for teacher; all records + create/verify for admin/principal), not a separate menu entry. Children Registration, Staff Profiles, My Profile, and Job Applications are genuinely different screens per role, so they're gated on and off entirely.
+
+**Build incrementally, not all at once**: nav items get wired up as each phase delivers the page it points to — Phase 1 adds Staff Profiles/My Profile, Phase 2 adds Job Applications, Phase 3 adds Children Registration, Phase 4/5 extend the existing Leave Applications/Payslips items. No nav item should ever link to a route that doesn't exist yet.
 
 ## Components
 
