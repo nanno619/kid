@@ -4,4 +4,6 @@
 :root {
     --tblr-font-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto,
         'Helvetica Neue', sans-serif;
+    --tblr-primary: oklch(50.8% 0.118 165.612);
+    --tblr-primary-rgb: 0, 122, 85;
 }
