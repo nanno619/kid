@@ -17,3 +17,6 @@ Current stack (Laravel 13.24, Pest, Pint, MySQL, Tabler/Bootstrap frontend, no S
 - Background: task-scheduling, queues-and-horizon
 
 Not applicable until the stack changes: nova-resource-patterns, laravel-ai-sdk/ai-sdk-essentials, laravel-vector-search/vector-semantic-search, upgrade-13, horizon-metrics-and-dashboards, e2e-playwright, internationalization-and-translation, dependencies-trim-packages.
+
+## Use the commit skill for git commits
+When creating a git commit, invoke the `commit` skill so messages follow Conventional Commits format (type(scope): description) instead of free-form prose.
