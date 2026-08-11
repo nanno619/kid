@@ -10,8 +10,8 @@
     "sail": false,
     "skills": [
         "infer-conventions",
+        "fortify-development",
         "laravel-best-practices",
-        "pest-testing",
-        "tailwindcss-development"
+        "pest-testing"
     ]
 }
