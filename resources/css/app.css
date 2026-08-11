@@ -6,4 +6,12 @@
         'Helvetica Neue', sans-serif;
     --tblr-primary: oklch(50.8% 0.118 165.612);
     --tblr-primary-rgb: 0, 122, 85;
+
+    /*
+     * Tabler core ships `:root { margin-left: calc(100vw - 100%); margin-right: 0 }` —
+     * a scrollbar-width compensation trick for 100vw full-bleed layouts. This app has
+     * no 100vw elements, so it just visibly shifts the whole page right whenever a
+     * vertical scrollbar appears (e.g. on long forms). Cancel it.
+     */
+    margin-left: 0;
 }
